@@ -1,0 +1,60 @@
+name: Run Tests on pre-main
+
+on:
+  push:
+    branches:
+      - pre-main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      sqlite:
+        image: nouchka/sqlite
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "sqlite3 -version" 
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'  
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Announce Test Start
+      run: echo "Starting tests on the pre-main branch...📜"
+      
+    - name: Run Tests
+      run: |
+        echo "Running tests on the pre-main branch...🏃🏽"
+        pytest tests/ --maxfail=1 --disable-warnings > test-results.txt
+        cat test-results.txt
+
+    - name: Check Python syntax
+      run: |
+        echo "Checking for errors in API servers files...👾"
+        find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
+
+    - name: Print Test Status
+      run: |
+        if grep -q "FAILURES" test-results.txt; then
+          echo "Some tests failed ❌💀. Please check the test results above."
+        else
+          echo "All tests passed successfully!✅🤗"
+        fi
+
+    - name: Final Message
+      run: echo "Test workflow on pre-main branch completed. "
