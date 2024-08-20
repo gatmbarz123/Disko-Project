@@ -1,2 +1,2 @@
-# Disko-Project
-25/8
+# disko-project
+disko-project
