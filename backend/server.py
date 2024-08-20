@@ -1,6 +1,7 @@
 from flask import Flask
 from src.disko.image_management.clusters import cluster_bp
-from src.disko.image_management.postReq import postReq_bp, getStatRes_bp
+from src.disko.image_management.postReq import postReq_bp
+from src.disko.image_management.statistics import getStatRes_bp
 from flask_cors import CORS 
 
 def create_app():

@@ -1,29 +1,34 @@
-from flask import Blueprint, request, jsonify
-from image_controller import ImageController
+import traceback
+from flask import Blueprint, jsonify, request
+from src.disko.image_collector import ImageCollector
+from src.disko.image_management.image_controller import ImageController
+import os 
 
-image_controller = ImageController(db_file="src/disko/sqlite.py")
-statistics_bp = Blueprint('statistics', __name__)
+getStatRes_bp = Blueprint('getStatRes', __name__, url_prefix='/api')
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
-@statistics_bp.route('/api/statistics', methods=['GET'])
-def get_image_statistics():
+
+@getStatRes_bp.route('/statistics', methods=['GET'])
+def get_statistics():
     cluster = request.args.get('cluster')
+    
     if not cluster:
-        return jsonify({"error": "Cluster parameter is required"}), 400
+        return jsonify({'error': 'No cluster provided'}), 400
+    
+    try:
+        db_name = os.path.join(base_dir, '../../../image_data.db')
 
-  
+        controller = ImageController(db_name)
+        percentages = controller.calculate_percentages(cluster)
 
-    # Calculate statistics
-    amount_per_registry = image_controller.calculate_amount_per_registry()
-    percentages = image_controller.calculate_percentages()
-
-    # Combine the data for each registry without any row limits
-    result = [
-        {
-            "registry_name": registry_name,
-            "number_of_images": amount_per_registry[registry_name],
-            "percentage": percentages[registry_name]
-        }
-        for registry_name in amount_per_registry
-    ]
-
-    return jsonify(result)
+        results = []
+        for item in percentages:
+            results.append({
+                "registry": item[0],
+                "amount": item[1],
+                "percentage": item[2]
+            })
+            
+        return jsonify({'results': results}), 200
+    except Exception as e:
+        return jsonify({'error': 'Internal Server Error'}), 500
