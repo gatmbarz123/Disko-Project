@@ -1,2 +1,2 @@
 # Disko-Project
-25/8
+Creating an interactive GUI in typescript, a new API.
