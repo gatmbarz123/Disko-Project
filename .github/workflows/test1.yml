@@ -3,59 +3,61 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - pre-main  # Trigger the workflow on pushes to the pre-main branch
   pull_request:
     branches:
-      - main
+      - pre-main  # Trigger the workflow on pull requests targeting the pre-main branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Specify the OS environment for the job
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Step to check out the repository's code
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3  # Step to set up Node.js
         with:
-          node-version: '16'
+          node-version: '16'  # Specify the Node.js version to use
 
       - name: Install dependencies
-        run: npm install
+        run: npm install  # Install project dependencies from package.json
 
       - name: TypeScript Compilation Check
-        run: npm run tsc
+        run: npm run tsc  # Run TypeScript compilation to check for type errors
 
       - name: Run CSS Linter
-        run: npm run lint:css
+        run: npm run lint:css  # Run CSS linter to ensure code follows style guidelines
 
       - name: Run Unit Tests
-        run: npm test
+        run: npm test  # Run unit tests to validate the code
 
   visual-regression-test:
-    runs-on: ubuntu-latest
-    needs: build
+    runs-on: ubuntu-latest  # Specify the OS environment for the job
+    needs: build  # This job depends on the successful completion of the build job
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Step to check out the repository's code
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3  # Step to set up Node.js
         with:
-          node-version: '16'
+          node-version: '16'  # Specify the Node.js version to use
 
       - name: Install dependencies
-        run: npm install
+        run: npm install  # Install project dependencies from package.json
 
       - name: Run Visual Regression Test
-        run: npm run test:visual
+        run: npm run test:visual  # Run visual regression tests to check for unintended UI changes
 
   deploy:
-    runs-on: ubuntu-latest
-    needs: [build, visual-regression-test]
+    runs-on: ubuntu-latest  # Specify the OS environment for the job
+    needs: [build, visual-regression-test]  # This job depends on the successful completion of the build and visual-regression-test jobs
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Step to check out the repository's code
+
+      # Deployment steps should be added here (e.g., deploying to a server or cloud service)
