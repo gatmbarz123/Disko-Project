@@ -1,0 +1,61 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: TypeScript Compilation Check
+        run: npm run tsc
+
+      - name: Run CSS Linter
+        run: npm run lint:css
+
+      - name: Run Unit Tests
+        run: npm test
+
+  visual-regression-test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Visual Regression Test
+        run: npm run test:visual
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, visual-regression-test]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
