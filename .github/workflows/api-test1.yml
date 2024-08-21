@@ -34,7 +34,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Announce Test Start
+    - name: Test Start
       run: echo "Starting tests on the pre-main branch...🌳"
       
     - name: Run Tests
