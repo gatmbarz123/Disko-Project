@@ -28,7 +28,12 @@ export default function Statistics() {
             <div className="pt-4 min-h-screen" style={{ backgroundImage: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)' }}>
                 <ClusterSelector onClusterChange={handleClusterChange} />
                 <Stat />
-
+                {selectedCluster && (
+                    <All 
+                        cluster={selectedCluster} 
+                        onImagesFetched={handleImagesFetched} 
+                    />
+                )}
                 <ClusterMigrationForm />
                 {selectedCluster && (
                     <CopyImageForm

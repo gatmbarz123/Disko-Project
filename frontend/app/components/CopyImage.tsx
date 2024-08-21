@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import All from './All'; 
 
-export function CopyImageForm({ cluster }: { cluster: string }) {
+interface CopyImageFormProps {
+    cluster: string; 
+    availableImages: string[]; 
+}
+
+export function CopyImageForm({ cluster, availableImages }: CopyImageFormProps) {
     const [formData, setFormData] = useState({
         images: [] as string[],
         new_registry: '',
@@ -12,13 +16,8 @@ export function CopyImageForm({ cluster }: { cluster: string }) {
         target_password: '',
     });
 
-    const [availableImages, setAvailableImages] = useState<string[]>([]);
     const [message, setMessage] = useState('');
     const [isOpen, setIsOpen] = useState(false);
-
-    const handleImagesFetched = (images: string[]) => {
-        setAvailableImages(images);
-    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type, selectedOptions } = e.target as HTMLSelectElement;
@@ -39,26 +38,40 @@ export function CopyImageForm({ cluster }: { cluster: string }) {
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setMessage('');
+      e.preventDefault();
+      setMessage('');
 
-        const query = new URLSearchParams(formData as any).toString();
+      const params = new URLSearchParams({
+        images: formData.images.join(','), // Encode images array
+        new_registry: formData.new_registry,
+        tag: formData.tag,
+        username: formData.username,
+        password: formData.password,
+        target_username: formData.target_username,
+        target_password: formData.target_password,
+        cluster: cluster || '', 
+    });
+  
+      const query = params.toString();
 
-        try {
-            const response = await fetch(`/api/copyimage?${query}`, {
-                method: 'GET',
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                setMessage('Success: Image(s) copied successfully!');
-            } else {
-                setMessage('Error in response');
-            }
-        } catch (error) {
-            setMessage('Network error');
-        }
-    };
+      console.log(`Request URL: http://localhost:5000/api/copyimage?${query}`);
+  
+      try {
+          const response = await fetch(`http://localhost:5000/api/copyimage?${query}`, {
+              method: 'GET',
+          });
+  
+          if (response.ok) {
+              const result = await response.json();
+              setMessage('Success: Image(s) copied successfully!');
+          } else {
+              setMessage('Error in response');
+          }
+      } catch (error) {
+          console.error('Fetch error:', error); // Log fetch error
+          setMessage('Network error');
+      }
+  };
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
@@ -140,9 +153,6 @@ export function CopyImageForm({ cluster }: { cluster: string }) {
                     </div>
                 </div>
             )}
-
-            
-            <All cluster={cluster} onImagesFetched={handleImagesFetched} />
         </div>
     );
 }

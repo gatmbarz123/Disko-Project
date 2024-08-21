@@ -52,3 +52,6 @@ docker.io/kindest/local-path-provisioner:v20240202-8f1494ea - SHA256: d0aeb8905d
 docker.io/kindest/local-path-provisioner:v20240202-8f1494ea - SHA256: d0aeb8905d5956a7117896acdbf8a7467fe5ddb12fea9f4b94c05fabc5236cd9
 docker.io/kindest/local-path-provisioner:v20240202-8f1494ea - SHA256: d0aeb8905d5956a7117896acdbf8a7467fe5ddb12fea9f4b94c05fabc5236cd9
 docker.io/kindest/local-path-provisioner:v20240202-8f1494ea - SHA256: d0aeb8905d5956a7117896acdbf8a7467fe5ddb12fea9f4b94c05fabc5236cd9
+docker.io/kindest/local-path-provisioner:v20240202-8f1494ea - SHA256: d0aeb8905d5956a7117896acdbf8a7467fe5ddb12fea9f4b94c05fabc5236cd9
+docker.io/kindest/local-path-provisioner:v20240202-8f1494ea - SHA256: d0aeb8905d5956a7117896acdbf8a7467fe5ddb12fea9f4b94c05fabc5236cd9
+docker.io/kindest/kindnetd:v20240202-8f1494ea - SHA256: 89fba6abb094555ffd247fd93d33ecdb84af447d8dde9925614e46553c9f376f
