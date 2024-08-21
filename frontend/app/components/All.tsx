@@ -5,9 +5,10 @@ import axios from 'axios';
 
 interface AllProps {
     cluster: string;
+    onImagesFetched: (images: string[]) => void; 
 }
 
-const All: React.FC<AllProps> = ({ cluster }) => {
+const All: React.FC<AllProps> = ({ cluster, onImagesFetched }) => {
     const [images, setImages] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -24,8 +25,9 @@ const All: React.FC<AllProps> = ({ cluster }) => {
             setLoading(true);
             setError(null);
             const response = await axios.get(`http://localhost:5000/api/images/${cluster}`);
-            console.log("API Response:", response.data);
-            setImages(response.data);
+            const fetchedImages = response.data;
+            setImages(fetchedImages);
+            onImagesFetched(fetchedImages.map((image: any) => image[0])); 
             setShowTable(true);
         } catch (err) {
             setError('Failed to load images');
@@ -41,7 +43,6 @@ const All: React.FC<AllProps> = ({ cluster }) => {
         setShowTable(prev => !prev);
     };
 
-    // Inline CSS styles with TypeScript types
     const styles: { [key: string]: CSSProperties } = {
         imageContainer: {
             marginTop: '20px',
@@ -88,9 +89,9 @@ const All: React.FC<AllProps> = ({ cluster }) => {
                     <tbody>
                         {images.map((image, index) => (
                             <tr key={index}>
-                                <td style={styles.tableCell}>{image[0]}</td>
-                                <td style={styles.tableCell}>{image[1]}</td>
-                                <td style={styles.tableCell}>{image[2]}</td>
+                                <td style={styles.tableCell}>{image[0]}</td> {/* Image Name */}
+                                <td style={styles.tableCell}>{image[1]}</td> {/* Date */}
+                                <td style={styles.tableCell}>{image[2]}</td> {/* Registry */}
                             </tr>
                         ))}
                     </tbody>
