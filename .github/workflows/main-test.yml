@@ -37,11 +37,14 @@ jobs:
       run: |
         find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
 
-    - name: Run Flask Server Detection and API Validation Tests
+    - name: Run Flask Server Finder
       run: |
-        echo "Running Flask server detection and API validation tests...🏃🏽"
-        python tests/discover_and_test_apis.py
-        pytest tests/discover_and_test_apis.py --maxfail=1 --disable-warnings > api-validation-results.txt
+        python find_flask_servers.py
+
+    - name: Run Tests
+      run: |
+        echo "Running API validation tests...🏃🏽"
+        pytest tests/ --maxfail=1 --disable-warnings > api-validation-results.txt
         cat api-validation-results.txt
 
     - name: Print Test Status
