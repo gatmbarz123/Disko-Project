@@ -34,12 +34,27 @@ jobs:
       run: |
         find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
 
+    - name: Run API Finder Script
+      run: |
+        echo "Running Flask server detection...🔍"
+        python tests/api_finder.py > flask-server-results.txt
+        cat flask-server-results.txt
+
     - name: Run Tests
       run: |
         echo "Running API validation tests...🏃🏽"
-        pytest tests/api_finder.py tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/test_python_syntax.py --disable-warnings > api-validation-results.txt || exit_code=$?
+        pytest tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/test_python_syntax.py --disable-warnings > api-validation-results.txt || exit_code=$?
         cat api-validation-results.txt
         exit $exit_code
+
+    - name: Check for New Flask Servers
+      run: |
+        if grep -q "Found Flask server candidate" flask-server-results.txt; then
+          echo "New Flask server detected! Please review the results.";
+          exit 1;
+        else
+          echo "No new Flask servers detected. ✅";
+        fi
 
     - name: Print Test Status
       if: failure()
