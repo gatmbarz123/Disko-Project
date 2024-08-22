@@ -106,7 +106,7 @@ export function ClusterMigrationForm({ isOpen, onClose }: ClusterMigrationFormPr
               onChange={handleChange}
             />
           </div>
-          <button type="submit">Submit</button>
+          <button class="button-small" type="submit">Submit</button>
         </form>
       </div>
     </div>
