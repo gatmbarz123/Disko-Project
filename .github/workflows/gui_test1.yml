@@ -1,0 +1,75 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - amir
+  pull_request:
+    branches:
+      - amir
+
+jobs:
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      frontend_changed: ${{ steps.changes.outputs.frontend_changed }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check for Frontend Changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+              - 'package.json'
+              - 'package-lock.json'
+
+      - name: Set Output
+        run: |
+          echo "frontend_changed=${{ steps.changes.outputs.frontend }}" >> $GITHUB_ENV
+
+  test-frontend:
+    name: Run Frontend Tests
+    runs-on: ubuntu-latest
+    if: env.frontend_changed == 'true'
+    needs: detect-changes
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Frontend Tests
+        run: npm run test --prefix frontend
+
+      - name: Run End-to-End Tests
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        working-directory: frontend
+
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: [test-frontend]
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production..."
+          # Add your deployment script or commands here

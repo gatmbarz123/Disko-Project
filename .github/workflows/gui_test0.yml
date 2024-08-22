@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - pre-main  # Trigger the workflow on pushes to the pre-main branch
+      - amir  # Trigger the workflow on pushes to the pre-main branch
   pull_request:
     branches:
-      - pre-main  # Trigger the workflow on pull requests targeting the pre-main branch
+      - amir  # Trigger the workflow on pull requests targeting the pre-main branch
 
 jobs:
   build:
