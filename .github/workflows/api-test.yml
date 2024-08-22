@@ -1,5 +1,4 @@
-name: Python Syntax Check and API Server Validation
-
+name: Python files test
 on:
   push:
     branches:
