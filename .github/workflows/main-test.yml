@@ -37,17 +37,15 @@ jobs:
     - name: Run Tests
       run: |
         echo "Running API validation tests...🏃🏽"
-        pytest tests/api_finder.py tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/test_python_syntax.py --disable-warnings > api-validation-results.txt
+        pytest tests/api_finder.py tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/test_python_syntax.py --disable-warnings > api-validation-results.txt || exit_code=$?
         cat api-validation-results.txt
+        exit $exit_code
 
     - name: Print Test Status
+      if: failure()
       run: |
-        if grep -q "FAILURES" api-validation-results.txt; then
-          echo "API validation tests failed ❌💀. Please check the results above.";
-          exit 1;
-        else
-          echo "All tests passed successfully! ✅🤗";
-        fi
+        echo "API validation tests failed ❌💀. Please check the results above."
 
     - name: Final Message
-      run: echo "API test completed."
+      if: success()
+      run: echo "All tests passed successfully! ✅🤗"
