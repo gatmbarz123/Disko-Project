@@ -18,13 +18,13 @@ export function Hero(){
                     and Migrate Images in Kubernetes.
                 </p>
                 <div className="flex justify-center gap-4 mt-20">
-                    <Link  className="bg-[#4328EB] w-1/2 max-w-xs text-4xl text-white rounded-md py-3 text-center" href="./statistics">
+                    <Link  className="button-big" href="./statistics">
                         Image Statistics
                     </Link>
-                    <Link className="bg-[#4328EB] w-1/2 max-w-xs text-4xl text-white rounded-md py-3 text-center" href="./images">
+                    <Link className="button-big" href="./images">
                         All The Images
                     </Link>
-                    <button className="bg-[#4328EB] w-1/2 max-w-xs text-4xl text-white rounded-md py-3 text-center" >
+                    <button className="button-big" >
                         Start Disko
 
                     </button>

@@ -80,7 +80,7 @@ export function CopyImageForm({ cluster, availableImages }: CopyImageFormProps) 
         <div>
             <button
                 onClick={openModal}
-                style={{ backgroundColor: 'blue', color: 'white', padding: '10px', border: 'none', borderRadius: '5px' }}
+                class="button-small"
             >
                 Open Copy Image Form
             </button>

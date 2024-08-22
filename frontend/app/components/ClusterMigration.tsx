@@ -160,8 +160,8 @@ export default function ClusterMigration() {
     <div>
       {/* Button to open the modal */}
       <button
+        class="button-small"
         onClick={openModal}
-        style={{ backgroundColor: 'blue', color: 'white', padding: '10px', border: 'none', borderRadius: '5px' }}
       >
         Open Cluster Migration Form
       </button>
