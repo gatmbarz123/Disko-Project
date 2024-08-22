@@ -37,7 +37,7 @@ jobs:
     - name: Run Tests
       run: |
         echo "Running API validation tests...🏃🏽"
-        pytest tests/api_finder.py tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/test_python_syntax.py --maxfail=1 --disable-warnings > api-validation-results.txt
+        pytest tests/api_finder.py tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/test_python_syntax.py --disable-warnings > api-validation-results.txt
         cat api-validation-results.txt
 
     - name: Print Test Status
