@@ -1,6 +1,10 @@
-name: Python files test
+name: python-tests
+
 on:
   push:
+    branches:
+      - amir
+  pull_request:
     branches:
       - amir
 
@@ -15,34 +19,32 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'  
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Test Start
-      run: echo "Starting tests on the pre-main branch...🌳"
-      
-    - name: Run Tests
+    - name: Run API Validation Tests
       run: |
-        echo "Running tests on the pre-main branch...🏃🏽"
-        pytest tests/ --maxfail=1 --disable-warnings > test-results.txt
-        cat test-results.txt
+        echo "Running API validation tests...🏃🏽"
+        pytest tests/discover_and_test_apis.py --maxfail=1 --disable-warnings > api-validation-results.txt
+        cat api-validation-results.txt
 
-    - name: Check Python syntax
+    - name: Check Python Syntax
       run: |
-        echo "Checking for errors in API server files...👾"
+        echo "Checking for syntax errors...👾"
         find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
 
     - name: Print Test Status
       run: |
-        if grep -q "FAILURES" test-results.txt; then
-          echo "Some tests failed ❌💀. Please check the test results above."
+        if grep -q "FAILURES" api-validation-results.txt; then
+          echo "API validation tests failed ❌💀. Please check the results above.";
+          exit 1;
         else
-          echo "All tests passed successfully!✅🤗"
+          echo "All tests passed successfully! ✅🤗";
         fi
 
     - name: Final Message
-      run: echo "Test workflow on pre-main branch completed."
+      run: echo "CI pipeline completed."
