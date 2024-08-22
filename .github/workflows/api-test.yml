@@ -1,9 +1,9 @@
-name: Run Tests on pre-main
+name: syntax errors in .py files
 
 on:
   push:
     branches:
-      - pre-main
+      - amir
 
 jobs:
   test:
