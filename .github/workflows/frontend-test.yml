@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Frontend Test Pipeline
 
 on:
   push:
@@ -27,7 +27,6 @@ jobs:
               - 'frontend/**'
               - 'package.json'
               - 'package-lock.json'
-
       - name: Set Output
         run: |
           echo "frontend_changed=${{ steps.changes.outputs.frontend }}" >> $GITHUB_ENV
@@ -48,9 +47,11 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+        working-directory: frontend
 
       - name: Run Frontend Tests
-        run: npm run test --prefix frontend
+        run: npm run test
+        working-directory: frontend
 
       - name: Run End-to-End Tests
         uses: cypress-io/github-action@v5
@@ -58,7 +59,7 @@ jobs:
           browser: chrome
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-        working-directory: frontend
+        run: npx cypress run --project frontend
 
   deploy:
     name: Deploy Application
@@ -72,4 +73,4 @@ jobs:
       - name: Deploy to Production
         run: |
           echo "Deploying to production..."
-          # Add your deployment script or commands here
+  
