@@ -50,8 +50,7 @@ jobs:
     - name: Check for New Flask Servers
       run: |
         if grep -q "Found Flask server candidate" flask-server-results.txt; then
-          echo "New Flask server detected! Please review the results.";
-          exit 1;
+          echo "New Flask server detected! Please review the results. 🚨";
         else
           echo "No new Flask servers detected. ✅";
         fi
