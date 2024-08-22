@@ -1,4 +1,4 @@
-name: python-tests
+name: Python API Tests
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest requests flask  # Ensure Flask is included here
+        pip install pytest requests flask  # Ensure Flask and other dependencies are installed
 
     - name: Verify Flask Installation
       run: |
@@ -37,9 +37,10 @@ jobs:
       run: |
         find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
 
-    - name: Run API Validation Tests
+    - name: Run Flask Server Detection and API Validation Tests
       run: |
-        echo "Running API validation tests...🏃🏽"
+        echo "Running Flask server detection and API validation tests...🏃🏽"
+        python tests/discover_and_test_apis.py
         pytest tests/discover_and_test_apis.py --maxfail=1 --disable-warnings > api-validation-results.txt
         cat api-validation-results.txt
 
@@ -53,4 +54,4 @@ jobs:
         fi
 
     - name: Final Message
-      run: echo "api test completed."
+      run: echo "API test completed."
