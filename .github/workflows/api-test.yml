@@ -1,4 +1,4 @@
-name: syntax errors in .py files
+name: Python Syntax Check and API Server Validation
 
 on:
   push:
@@ -8,17 +8,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    services:
-      sqlite:
-        image: nouchka/sqlite3
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd "sqlite3 -version" 
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 3
 
     steps:
     - name: Checkout code
@@ -36,7 +25,7 @@ jobs:
 
     - name: Test Start
       run: echo "Starting tests on the pre-main branch...🌳"
-     
+      
     - name: Run Tests
       run: |
         echo "Running tests on the pre-main branch...🏃🏽"
@@ -45,7 +34,7 @@ jobs:
 
     - name: Check Python syntax
       run: |
-        echo "Checking for errors in API servers files...👾"
+        echo "Checking for errors in API server files...👾"
         find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
 
     - name: Print Test Status
@@ -58,4 +47,3 @@ jobs:
 
     - name: Final Message
       run: echo "Test workflow on pre-main branch completed."
-
