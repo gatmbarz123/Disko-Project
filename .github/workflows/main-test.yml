@@ -29,18 +29,19 @@ jobs:
     - name: Verify Flask Installation
       run: |
         python -c "import importlib.metadata; print(f'Flask version: {importlib.metadata.version(\"flask\")}')"
-      
+
+    - name: Print Syntax Check Message
+      run: echo "Checking for syntax errors...👾"
+
+    - name: Check Python Syntax
+      run: |
+        find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
 
     - name: Run API Validation Tests
       run: |
         echo "Running API validation tests...🏃🏽"
         pytest tests/discover_and_test_apis.py --maxfail=1 --disable-warnings > api-validation-results.txt
         cat api-validation-results.txt
-
-    - name: Check Python Syntax
-      run: |
-        echo "Checking for syntax errors...👾"
-        find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
 
     - name: Print Test Status
       run: |
@@ -52,4 +53,4 @@ jobs:
         fi
 
     - name: Final Message
-      run: echo "CI pipeline completed."
+      run: echo "api test completed."
