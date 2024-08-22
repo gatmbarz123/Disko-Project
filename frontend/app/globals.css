@@ -11,12 +11,6 @@ body {
     padding: 0;
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto; /* Center the container */
-    padding: 20px;
-}
-
 header {
     margin-bottom: 20px;
 }
@@ -36,12 +30,14 @@ select, button {
 
 /* Table Styling */
 table {
-    width: 100%;
-    border-collapse: collapse; /* Remove extra space in tables */
-    margin: 20px 0;
+    width: auto; /* Make table width auto to be compact */
+    margin: 20px auto; /* Center the table */
+    border-collapse: separate;
+    border-spacing: 0;/* Remove extra space in tables */
     background-color: #ffffff; /* Distinct background color for the table */
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
 th, td {
@@ -53,6 +49,17 @@ th, td {
 th {
     background-color: #4328EB; /* Different background color for header */
     color: white;
+    border-top-left-radius: 5px; /* Round top-left corner */
+    border-top-right-radius: 5px; /* Round top-right corner */
+}
+
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: 5px; /* Round bottom-left corner */
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: 5px; /* Round bottom-right corner */
 }
 
 tr:nth-child(even) {

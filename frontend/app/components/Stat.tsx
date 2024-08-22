@@ -31,7 +31,7 @@ export function Stat() {
     };
 
     useEffect(() => {
-        setLoading(false);
+        //setLoading(false);
         const handleUpdateStatistics = (event: CustomEvent) => {
             const selectedCluster = event.detail.cluster;
             setCluster(selectedCluster);
