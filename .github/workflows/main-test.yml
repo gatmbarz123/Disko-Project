@@ -24,27 +24,20 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest requests flask  # Ensure Flask and other dependencies are installed
+        pip install pytest requests flask
 
     - name: Verify Flask Installation
       run: |
         python -c "import importlib.metadata; print(f'Flask version: {importlib.metadata.version(\"flask\")}')"
 
-    - name: Print Syntax Check Message
-      run: echo "Checking for syntax errors...👾"
-
     - name: Check Python Syntax
       run: |
         find backend/ -name "*.py" -print0 | xargs -0 -n1 python -m py_compile
 
-    - name: Run Flask Server Finder
-      run: |
-        python tests/api_finder.py
-
     - name: Run Tests
       run: |
         echo "Running API validation tests...🏃🏽"
-        pytest tests/ --maxfail=1 --disable-warnings > api-validation-results.txt
+        pytest tests/api_finder.py tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/test_python_syntax.py --maxfail=1 --disable-warnings > api-validation-results.txt
         cat api-validation-results.txt
 
     - name: Print Test Status
