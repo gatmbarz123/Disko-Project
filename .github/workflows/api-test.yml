@@ -11,7 +11,7 @@ jobs:
 
     services:
       sqlite:
-        image: nouchka/sqlite
+        image: nouchka/sqlite3
         ports:
           - 3306:3306
         options: >-
@@ -36,7 +36,7 @@ jobs:
 
     - name: Test Start
       run: echo "Starting tests on the pre-main branch...🌳"
-      
+     
     - name: Run Tests
       run: |
         echo "Running tests on the pre-main branch...🏃🏽"
@@ -57,4 +57,5 @@ jobs:
         fi
 
     - name: Final Message
-      run: echo "Test workflow on pre-main branch completed. "
+      run: echo "Test workflow on pre-main branch completed."
+
