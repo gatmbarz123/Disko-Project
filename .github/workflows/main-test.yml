@@ -39,7 +39,7 @@ jobs:
 
     - name: Run Flask Server Finder
       run: |
-        python find_flask_servers.py
+        python tests/api_finder.py
 
     - name: Run Tests
       run: |
